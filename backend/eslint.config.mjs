@@ -17,7 +17,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   {
     files: ["**/*.{js,mjs,cjs,ts}"],
-    plugins: { pluginNode },
+    plugins: { n: pluginNode },
     rules: {
       "n/no-unsupported-features/es-syntax": "off", // Allow modern ES syntax
       "n/no-missing-import": "error", // Ensure imports exist

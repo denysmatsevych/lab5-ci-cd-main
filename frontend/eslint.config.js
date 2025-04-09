@@ -16,11 +16,29 @@ export default defineConfig([
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     languageOptions: { globals: globals.browser },
   },
+  pluginReactHooks.configs["recommended-latest"],
   tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat.recommended, // This is not a plugin object, but a shareable config object
+  pluginReact.configs.flat['jsx-runtime'], // Add this if you are using React 17+
   {
     files: ["**/*.{jsx,tsx}"],
-    plugins: { pluginReactHooks, pluginJsxA11y },
+    plugins: {
+      pluginReactHooks,
+      "jsx-a11y": pluginJsxA11y,
+      react: pluginReact,
+    },
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    settings: {
+      react: {
+        version: "19.0.0", // Automatically detect the React version
+      },
+    },
     rules: {
       "react/react-in-jsx-scope": "off", // Not needed with React 17+
       "react/prop-types": "off", // Disable prop-types for TypeScript
