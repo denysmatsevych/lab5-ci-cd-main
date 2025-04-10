@@ -1,11 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
     build: ./frontend
     container_name: lab5-ci-cd-main-frontend
     ports:
-      - "127.0.0.1:80:80"
+      - 127.0.0.1:80:80
+    networks:
+      - node-network
     depends_on:
       - backend
 
@@ -13,11 +15,13 @@ services:
     build: ./backend
     container_name: lab5-ci-cd-main-backend
     ports:
-      - "127.0.0.1:3000:3000"
+      - 127.0.0.1:3000:3000
     environment:
       - NODE_ENV=production
       - PORT=3000
       - MONGO_URI=mongodb://mongo:27017/lab5-ci-cd-main
+    networks:
+      - node-network
     depends_on:
       - mongo
 
@@ -27,7 +31,12 @@ services:
     volumes:
       - mongo-data:/data/db
     ports:
-      - "27017:27017"
+      - 27017:27017
+    networks:
+      - node-network
 
 volumes:
   mongo-data:
+
+ networks:
+  - node-network
