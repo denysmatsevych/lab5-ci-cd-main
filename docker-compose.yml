@@ -5,7 +5,7 @@ services:
     build: ./frontend
     container_name: lab5-ci-cd-main-frontend
     ports:
-      - "80:80"
+      - "127.0.0.1:80:80"
     depends_on:
       - backend
 
@@ -13,7 +13,7 @@ services:
     build: ./backend
     container_name: lab5-ci-cd-main-backend
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
