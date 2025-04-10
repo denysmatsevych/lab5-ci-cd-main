@@ -6,6 +6,8 @@ services:
     container_name: lab5-ci-cd-main-frontend
     ports:
       - 127.0.0.1:80:80
+    environment:
+      - BACKEND_URL=http://backend:3000
     networks:
       - node-network
     depends_on:
