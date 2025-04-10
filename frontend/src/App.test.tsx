@@ -5,6 +5,10 @@ import App from './App';
 describe('App', () => {
   it('renders headline', () => {
     render(<App />);
-    expect(screen.getByText(/Todo List Application/i)).toBeInTheDocument();
+    expect(
+      screen.getByText((_, element) => {
+        return element?.textContent === 'Vite + React';
+      })
+    ).toBeInTheDocument();
   });
 });
