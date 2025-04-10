@@ -3,6 +3,7 @@ version: "3.8"
 services:
   frontend:
     build: ./frontend
+    image: denysmatsevych/lab5-ci-cd-main-frontend:latest
     container_name: lab5-ci-cd-main-frontend
     ports:
       - 127.0.0.1:80:80
@@ -11,10 +12,19 @@ services:
     networks:
       - node-network
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   backend:
     build: ./backend
+    image: denysmatsevych/lab5-ci-cd-main-backend:latest
     container_name: lab5-ci-cd-main-backend
     ports:
       - 127.0.0.1:3000:3000
@@ -25,7 +35,14 @@ services:
     networks:
       - node-network
     depends_on:
-      - mongo
+      mongo:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   mongo:
     image: mongo:latest
@@ -36,6 +53,16 @@ services:
       - 27017:27017
     networks:
       - node-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
 volumes:
   mongo-data:
+
+networks:
+  node-network:
+    driver: bridge

@@ -11,7 +11,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 ENV BACKEND_URL=http://backend:3000
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash curl
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 EXPOSE 80
